@@ -43,31 +43,32 @@ most voted restaurant in their area
 
 <h1>User stories</h1>
 
-<p>I always argue with my friends where to go and what to get, so we end it up going to same restaurants.
--annita </p>
+<div>I always argue with my friends where to go and what to get, so we end it up going to same restaurants.
+-annita </div>
 
-<p>I spend a lot of time deciding where to go, I check reviews, pictures and price and locations. So knowing what people like nearby where i’m at reduces the semi-crisis I feel every time I try decide where to go eat.
--katerina </p>
+<div>I spend a lot of time deciding where to go, I check reviews, pictures and price and locations. So knowing what people like nearby where i’m at reduces the semi-crisis I feel every time I try decide where to go eat.
+-katerina </div>
 
-<p>just because we have too many options and all seems amazing makes it so hard to decide where to go every time. With an app that can tell me what restaurant is booming can be a lifesaver 
--juan<p>
+<div>just because we have too many options and all seems amazing makes it so hard to decide where to go every time. With an app that can tell me what restaurant is booming can be a lifesaver 
+-juan</div>
 
 <h1>Challenges:</h1>
-Creating a solid back-end that references effectively to places, friends of friends and  vote options
+<ul>Creating a solid back-end that references effectively to places, friends of friends and  vote options
 Implementing React with Rails
 Testability 
 smart geolocation 
 work in accordance to the timeline 
+</ul>
 
 <h1>Technologies</h1> 
 React and Ruby on rails 
 #Gems 
-geocode 
+<ul>geocode 
 bcrypt
 Pry-byebug 
 carrerwave(upload files)
 #API
-Yelp & google maps 
+Yelp & google maps </ul>
 
 
 
