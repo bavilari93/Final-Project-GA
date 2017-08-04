@@ -53,22 +53,25 @@ most voted restaurant in their area
 -juan</div>
 
 <h1>Challenges:</h1>
-<ul>Creating a solid back-end that references effectively to places, friends of friends and  vote options
-Implementing React with Rails
-Testability 
-smart geolocation 
-work in accordance to the timeline 
+<ul>
+<li>Creating a solid back-end that references effectively to places, friends of friends and  vote options</li>
+<li>Implementing React with Rails</li>
+<li>Testability </li>
+<li>smart geolocation </li>
+<li>work in accordance to the timeline </li>
 </ul>
 
 <h1>Technologies</h1> 
 React and Ruby on rails 
 #Gems 
-<ul>geocode 
-bcrypt
-Pry-byebug 
-carrerwave(upload files)
+<ul>
+<li>geocode </li>
+<li>bcrypt</li>
+<li>Pry-byebug</li> 
+<li>carrerwave(upload files)</li>
+</ul>
 #API
-Yelp & google maps </ul>
+Yelp & google maps 
 
 
 
