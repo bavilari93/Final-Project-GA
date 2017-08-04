@@ -12,11 +12,16 @@ user stories, and a brief of what the app does.
 
 on top (nav bar) option of sign up, log in- if log in search for places, profile, most voted, add friends
 
+<img width="510" alt="screen shot 2017-08-04 at 10 14 58 am" src="https://user-images.githubusercontent.com/28660530/28972491-dae782c4-78fd-11e7-8a00-1f457510b777.png">
+
 # what they see on their profile? 
 edit profile in case they change location. 
 saved places(option to add, delete, and  comments on each)
 places they voted 
 -ppl they have befriended
+
+<img width="515" alt="screen shot 2017-08-04 at 10 10 10 am" src="https://user-images.githubusercontent.com/28660530/28972492-dae82de6-78fd-11e7-934e-6043fc7edd42.png">
+
 
 # what info will be getting and what they can do with it? 
 restaurant information, 
@@ -59,6 +64,7 @@ most voted restaurant in their area
 <li>Testability </li>
 <li>smart geolocation </li>
 <li>work in accordance to the timeline </li>
+<li>Global comments on each restaurant's page</li>
 </ul>
 
 <h1>Technologies</h1> 
