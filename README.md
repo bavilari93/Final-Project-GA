@@ -64,7 +64,7 @@ most voted restaurant in their area
 <li>Testability </li>
 <li>smart geolocation </li>
 <li>work in accordance to the timeline </li>
-<li>Global comments on each restaurant's page</li>
+<li>Global comments made from different users on each restaurant's page</li>
 </ul>
 
 <h1>Technologies</h1> 
