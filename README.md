@@ -1,5 +1,27 @@
+# Appetit
+A foodie web app that allows the user to vote for their favorite restaurants and eats to help out other in their search of trending places to eat nearby.
 
-<h1>name:</h1> <h2> Appetit</h2>
+# How users interact ?
+they can vote, comment on what they like about the places and also add friends and see friends profiles
+
+# what they see on the homepage? 
+A non user can see a list of most voted restaurants by area(and they can search this by an an input field) 
+each restaurant will give the option to vote but it’ll redirect if the user hasn’t sing up 
+
+user stories, and a brief of what the app does.
+
+on top (nav bar) option of sign up, log in- if log in search for places, profile, most voted, add friends
+
+# what they see on their profile? 
+edit profile in case they change location. 
+saved places(option to add, delete, and  comments on each)
+places they voted 
+-ppl they have befriended
+
+# what info will be getting and what they can do with it? 
+restaurant information, 
+most voted restaurant in their area 
+
 <h1>MVP(minimun viable product):</h1>
 <ul>
 <li>Users search nearby places</li>
@@ -16,6 +38,7 @@
 <li>send invitation to friend to checkout places </li>
 <li>map with saved locations </li>
 <li>smart geo-location</li>
+<li> React Native </li>
 </ul>
 
 <h1>User stories</h1>
@@ -29,6 +52,22 @@
 <p>just because we have too many options and all seems amazing makes it so hard to decide where to go every time. With an app that can tell me what restaurant is booming can be a lifesaver 
 -juan<p>
 
+<h1>Challenges:</h1>
+Creating a solid back-end that references effectively to places, friends of friends and  vote options
+Implementing React with Rails
+Testability 
+smart geolocation 
+work in accordance to the timeline 
+
+<h1>Technologies</h1> 
+React and Ruby on rails 
+#Gems 
+geocode 
+bcrypt
+Pry-byebug 
+carrerwave(upload files)
+#API
+Yelp & google maps 
 
 
 
