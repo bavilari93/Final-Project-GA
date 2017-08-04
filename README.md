@@ -63,14 +63,14 @@ most voted restaurant in their area
 
 <h1>Technologies</h1> 
 React and Ruby on rails 
-#Gems 
+# Gems 
 <ul>
 <li>geocode </li>
 <li>bcrypt</li>
 <li>Pry-byebug</li> 
 <li>carrerwave(upload files)</li>
 </ul>
-#API
+# API
 Yelp & google maps 
 
 
