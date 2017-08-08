@@ -1,36 +1,43 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Search = (props) =>{
-		return(
+class Search extends Component {
 
-			<
+    render() {
+        return (
+
+            <
             form className = "search-restaurant"
-            onSubmit = { this.handleSubmit.bind(this) } >
+            onSubmit = { this.props.submit.bind(this) } >
             <
             label >
             <
             input type = "text"
             name = "content"
-            value = { props.valueparam} 
-            onChange = { (event) => {
-			props.changeParam(event)}}
-            /> <
+            value = { this.props.searchValue } onChange = {
+                (event) => {
+                    this.props.changeValue(event)
+                }
+            }
+            placeholder = "Search For Favorite" /
+            > <
             input type = "range"
             name = "content"
-            ref="range"
-            value = { props.range } 
-            min = "0"
-		    max = "11"
-            onChange = {(e) => {props.rangeChange(e)}}
-            />
-            <
+            ref = "range"
+            value = { this.props.range } min = "0"
+            max = "11"
+            onChange = {
+                (e) => { this.props.changeRange(e) } }
+            /> <
             /label> <
             input type = "submit"
             value = "submit" / >
             <
             /form>
 
-			)
-	}
+        )
+    }
+
+
+}
 
 export default Search;
