@@ -5,13 +5,24 @@ class RestaurantList extends Component {
 		return this.props.restaurants.map((restaurant, index)=>{
 			return(
 				<div key={index} className="restaurant">
-				<h2>{restaurant.name}</h2>
-				<img src={restaurant.thunmPic} alt={restaurant.name}/>
+				<h2
+				 onClick={(e) => {
+              this.props.setRestaurant(restaurant);
+            }}
+            >{restaurant.name}</h2>
+				<img src={restaurant.thunmpic} alt={restaurant.name}/>
 				<span> </span> 
 				<p>location: {restaurant.location}</p>
-				<p>Average Cost{restaurant.averageCost}</p>
-				<p>Price Range for Two{restaurant.priceRange}</p>
+				<p>Average Cost{restaurant.averagecost}</p>
+				<p>Price Range for Two{restaurant.pricerange}</p>
 				<p>Cusine:{restaurant.cuisines}</p>
+				<div
+            className="button"
+            onClick={()=>{this.props.button.onClick(restaurant)}}
+            ><p>{this.props.button.text}</p></div>
+
+
+
 				</div>
 
 				)

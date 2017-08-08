@@ -3,13 +3,13 @@ DROP TABLE  IF EXISTS restaurants CASCADE;
 CREATE TABLE restaurants(
 id BIGSERIAL PRIMARY KEY, 
 name VARCHAR NOT NULL,
-location VARCHAR NOT NULL,  
-latitude FLOAT  NOT NULL,
-longitude FLOAT  NOT NULL,
-averagecost INT  NOT NULL, 
+location VARCHAR(255) NOT NULL,  
+latitude FLOAT NOT NULL,
+longitude FLOAT NOT NULL,
+averagecost VARCHAR NOT NULL, 
 pricerange INT  NOT NULL, 
 thunmpic VARCHAR(255),
-cusines VARCHAR NOT NULL,
+cuisines VARCHAR (255)NOT NULL,
 ratingcolor VARCHAR NOT NULL,
 aggregaterating VARCHAR NOT NULL
 );

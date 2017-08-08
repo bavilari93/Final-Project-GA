@@ -25,11 +25,12 @@ nav div:hover{
 background-color: rgb(204, 204, 204);
 margin-top: 30px;
 
+
 }
 
 .restaurant{
-  width: 400px;
-  max-width: 500px;
+  width: 300px;
+  max-width: 400px;
   height: 500px;
   margin: 20px auto;
   margin-left: 20px;
@@ -60,16 +61,16 @@ form {
 /*inputs Text*/
 input[type=text] {
   -webkit-transition: width 0.2s ease-in-out;
-  transition: width 0.4s ease-in-out;
+  transition: width 0.2s ease-in-out;
   border: 0px solid transparent;
-  border-bottom: 1px solid #333;
+  border-bottom: 2px solid #ADE3E5;
   outline: 0px solid transparent;
-  font-size: .8em;
+  font-size: .9em;
   text-align: center;
  
   
 }
 
 input[type=text]:focus {
-    width: 40%;
+    width: 30%;
 }

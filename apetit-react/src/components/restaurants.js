@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
+import axios from 'axios';
 import { geolocated } from 'react-geolocated';
 import RestaurantList from './restaurantlist'
 import Nav from './nav'
 import Search from './searchfrom'
 import Restaurant from './restaurant'
+import RestaurantDb from './restaurantbd'
 
 
 class Restaurants extends Component {
@@ -17,9 +19,12 @@ class Restaurants extends Component {
             data: [],
             results: [],
             mode: false,
-            current: false
+            current: false,
+            url: 'http://localhost:8000/api'
         }
     }
+
+    // Search form change 
     handleSearchChange(event) {
         this.setState({ restaurant: event.target.value });
     }
@@ -27,7 +32,7 @@ class Restaurants extends Component {
     handleRangeChange(event) {
         this.setState({ range: event.target.value })
     }
-
+    // Search Form Submit  for API
     handleSubmit(restaurant) {
         restaurant.preventDefault()
         let params = this.state.restaurant
@@ -50,9 +55,20 @@ class Restaurants extends Component {
         }).done((data) => {
             console.log(data)
             this.setState({ results: this.parsedResults(data['restaurants']) })
-            console.log(this.state.results.length)
         });
     }
+
+
+    getRestaurants() {
+        axios.get(this.state.url)
+            .then(data => {
+                this.setState({
+                    results: data.data
+                })
+            })
+
+    }
+    // parsed result from api
 
     parsedResults(data) {
         return data.filter(restaurant => {
@@ -61,18 +77,69 @@ class Restaurants extends Component {
             return {
                 name: restaurant['restaurant'].name ? restaurant['restaurant'].name : "N/A",
                 location: restaurant['restaurant'].location.address ? restaurant['restaurant'].location.address : "N/A",
-                latitude: restaurant['restaurant'].location.latitude ? restaurant['restaurant'].location.latitude : "N/A",
-                longitude: restaurant['restaurant'].location.longitud ? restaurant['restaurant'].location.longitud : "N/A",
-                averageCost: restaurant['restaurant'].R.average_cost_for_two ? restaurant['restaurant'].R.average_cost_for_two : "N/A",
-                priceRange: restaurant['restaurant'].price_range ? restaurant['restaurant'].price_range : "N/A",
-                thunmPic: restaurant['restaurant'].featured_image ? restaurant['restaurant'].featured_image : "https://static.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg",
+                latitude: restaurant['restaurant'].location.latitude ? restaurant['restaurant'].location.latitude : 40.7317696,
+                longitude: restaurant['restaurant'].location.longitude ? restaurant['restaurant'].location.longitude : -73.9841161,
+                averagecost: restaurant['restaurant'].R.average_cost_for_two ? restaurant['restaurant'].R.average_cost_for_two : "N/A",
+                pricerange: restaurant['restaurant'].price_range ? restaurant['restaurant'].price_range : "N/A",
+                thunmpic: restaurant['restaurant'].featured_image ? restaurant['restaurant'].featured_image : "https://static.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg",
                 cuisines: restaurant['restaurant'].cuisines ? restaurant['restaurant'].cuisines : "N/A",
-                rating_color: restaurant['restaurant'].user_rating.rating_color ? restaurant['restaurant'].user_rating.rating_color : "N/A",
-                aggregate_rating: restaurant['restaurant'].user_rating.aggregate_rating ? restaurant['restaurant'].user_rating.aggregate_rating : "N/A"
+                ratingcolor: restaurant['restaurant'].user_rating.rating_color ? restaurant['restaurant'].user_rating.rating_color : "N/A",
+                aggregaterating: restaurant['restaurant'].user_rating.aggregate_rating ? restaurant['restaurant'].user_rating.aggregate_rating : "N/A"
             }
         })
 
     }
+
+    // save restaurant from api 
+    save(data) {
+        console.log(data)
+      
+        let name = data.name
+        let location = data.location
+        let latitude =  data.latitude
+        let longitude =  data.longitude
+        let averagecost = data.averagecost
+        let pricerange = data.pricerange
+        let thunmpic = data.thunmpic
+        let cuisines = data.cuisines
+        let ratingcolor = data.ratingcolor
+        let aggregaterating = data.aggregaterating
+          console.log(cuisines)
+
+        fetch(this.state.url, {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    location: location,
+                    latitude: latitude,
+                    longitude: longitude,
+                    averagecost: averagecost,
+                    pricerange: pricerange,
+                    thunmpic: thunmpic,
+                    cuisines: cuisines,
+                    ratingcolor: ratingcolor,
+                    aggregaterating: aggregaterating
+                })
+            })
+            .then((response) => {
+                console.log(response);
+                return response.json()
+            })
+            .then((body) => {
+                console.log(body)
+            });
+    }
+
+    // delete data
+    delete(){
+
+    }
+
+    // mode changes from navbar and when click on one restaurant
 
     changeMode(mode, current = false) {
         console.log('this is the mode that Im changing', mode)
@@ -83,87 +150,97 @@ class Restaurants extends Component {
         });
     }
 
-
-    renderRestaurants() {
-        if (this.state.results.length > 0) {
-            return ( <
-                RestaurantList restaurants = { this.state.results }
-                />
-            )
-        } else { console.log("error") }
+    // sets the move when click on one reataurant 
+    setRestaurant(restaurant) {
+        console.log(restaurant)
+        this.setState(prev => {
+            prev.current = restaurant;
+            prev.mode = "restaurant"
+            return prev
+        })
     }
 
-
+    // view controller - what and what not to display 
     renderView() {
         console.log(this.state.mode)
         if (this.state.mode === "restaurants") {
             console.log("im inside the render of restaurants")
             return (
                 // this i have to pass the methods that communicate with the backend
-                <
-                Search searchValue = { this.state.restaurant } changeValue = { this.handleSearchChange.bind(this) } range = { this.state.range } changeRange = { this.handleRangeChange.bind(this) } submit = { this.handleSubmit.bind(this) }
-                />
-
+                // use search to filter the saved info 
+                <div>
+                { this.getRestaurants()} 
+                <RestaurantList 
+                    restaurants = { this.state.results } 
+                    setRestaurant = { this.setRestaurant.bind(this) }
+                    button = {{
+                        onClick: this.delete.bind(this),
+                        text:"delete"
+                        }}
+                /> 
+                </div >
             )
         } else if (this.state.mode === "search") {
             console.log("im inside the render of search")
-            return ( <
-                div >
-                <
-                Search searchValue = { this.state.restaurant } changeValue = { this.handleSearchChange.bind(this) } range = { this.state.range } changeRange = { this.handleRangeChange.bind(this) } submit = { this.handleSubmit.bind(this) }
-                /> <
-                RestaurantList restaurants = { this.state.results }
+            return ( <div >
+                <Search 
+                searchValue = { this.state.restaurant } 
+                changeValue = { this.handleSearchChange.bind(this) } 
+                range = { this.state.range } 
+                changeRange = { this.handleRangeChange.bind(this) } 
+                submit = { this.handleSubmit.bind(this) }
                 /> 
 
-                { this.renderRestaurants()}
-
-                <
-                /div>
-
-               
+                 <RestaurantList 
+                restaurants = { this.state.results } 
+                setRestaurant = { this.setRestaurant.bind(this) } 
+                button = {{
+                    onClick: this.save.bind(this),
+                    text:"save"
+                }}
+                /> 
+                </div>               
             )
-        } else if (this.state.mode === "restaurant") {
+        } else if(this.state.mode === "restaurant") {
             console.log("im inside the render of one restaurant")
-            return ( < Restaurant / > )
-        } else {
-            return ( <
-                p > loading < /p>
+            return ( 
+                < Restaurant 
+                restaurant= {this.state.current} 
+                />
+                ) 
+        }else{
+            return ( 
+            <p> loading < /p>
+            )
+            }
+        }
+
+
+        // main render
+        render() {
+
+            return (
+
+                !this.props.isGeolocationAvailable ?
+                    // display input of text
+                    <div > We are sorry but your browser does not support Geolocation < /div>
+                    :!this.props.isGeolocationEnabled ? 
+                    <div> Getting your inner foodie < /div> :
+                    this.props.coords ?
+                    <div>
+                    <Nav changeMode = { this.changeMode.bind(this) }/> 
+                    {this.renderView()} 
+                    </div>: 
+                    <div> Retriving suggestions </div>
+
             )
         }
     }
 
-    
 
-    render() {
-
-        return (!this.props.isGeolocationAvailable ?
-            // display input of text
-            <
-            div > We are sorry but your browser does not support Geolocation < /div> :!this.props.isGeolocationEnabled ? <
-            div > Getting your inner foodie < /div> :
-            this.props.coords ?
-            <
-            div >
-            <
-            Nav changeMode = { this.changeMode.bind(this) }
-            />
-
-            { this.renderView() }
-
-
-
-            <
-            /div> : <
-            div > Retriving suggestions < /div>
-
-        )
-    }
-}
-
-
-export default geolocated({
-    positionOptions: {
-        enableHighAccuracy: false,
-    },
-    userDecisionTimeout: 5000,
-})(Restaurants);
+    export default geolocated({
+        positionOptions: {
+            enableHighAccuracy: false,
+        },
+        userDecisionTimeout: 5000,
+    })(Restaurants);
