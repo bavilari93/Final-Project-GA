@@ -18,6 +18,7 @@ class Restaurants extends Component {
             range: 2,
             data: [],
             results: [],
+            saved:[],
             mode: false,
             current: false,
             url: 'http://localhost:8000/api'
@@ -60,13 +61,14 @@ class Restaurants extends Component {
 
 
     getRestaurants() {
+        console.log('this is happening')
         axios.get(this.state.url)
             .then(data => {
                 this.setState({
-                    results: data.data
+                    saved: data.data,
+                    mode:"restaurants"
                 })
             })
-
     }
     // parsed result from api
 
@@ -87,9 +89,7 @@ class Restaurants extends Component {
                 aggregaterating: restaurant['restaurant'].user_rating.aggregate_rating ? restaurant['restaurant'].user_rating.aggregate_rating : "N/A"
             }
         })
-
     }
-
     // save restaurant from api 
     save(data) {
         console.log(data)
@@ -163,26 +163,10 @@ class Restaurants extends Component {
     // view controller - what and what not to display 
     renderView() {
         console.log(this.state.mode)
-        if (this.state.mode === "restaurants") {
-            console.log("im inside the render of restaurants")
-            return (
-                // this i have to pass the methods that communicate with the backend
-                // use search to filter the saved info 
-                <div>
-                { this.getRestaurants()} 
-                <RestaurantList 
-                    restaurants = { this.state.results } 
-                    setRestaurant = { this.setRestaurant.bind(this) }
-                    button = {{
-                        onClick: this.delete.bind(this),
-                        text:"delete"
-                        }}
-                /> 
-                </div >
-            )
-        } else if (this.state.mode === "search") {
+        if (this.state.mode === "search") {
             console.log("im inside the render of search")
-            return ( <div >
+            return ( 
+                <div>
                 <Search 
                 searchValue = { this.state.restaurant } 
                 changeValue = { this.handleSearchChange.bind(this) } 
@@ -190,10 +174,9 @@ class Restaurants extends Component {
                 changeRange = { this.handleRangeChange.bind(this) } 
                 submit = { this.handleSubmit.bind(this) }
                 /> 
-
                  <RestaurantList 
                 restaurants = { this.state.results } 
-                setRestaurant = { this.setRestaurant.bind(this) } 
+                setRestaurant = {this.setRestaurant.bind(this) } 
                 button = {{
                     onClick: this.save.bind(this),
                     text:"save"
@@ -201,19 +184,34 @@ class Restaurants extends Component {
                 /> 
                 </div>               
             )
-        } else if(this.state.mode === "restaurant") {
+        }else if(this.state.mode === "restaurant") {
             console.log("im inside the render of one restaurant")
             return ( 
-                < Restaurant 
-                restaurant= {this.state.current} 
-                />
+                <Restaurant 
+                restaurant= {this.state.current}/>
                 ) 
+        }else if (this.state.mode === "restaurants"){
+            console.log("im inside the render of restaurants", this.state.mode)
+            return (
+                // this i have to pass the methods that communicate with the backend
+                // use search to filter the saved info 
+                <div>
+                <RestaurantList 
+                    restaurants = { this.state.saved } 
+                    setRestaurant = { this.setRestaurant.bind(this) }
+                    button = {{
+                        onClick: this.delete.bind(this),
+                        text:"delete"
+                        }}
+                        /> 
+                </div >
+            )
         }else{
             return ( 
-            <p> loading < /p>
+            <p> loading </p>
             )
-            }
         }
+    }
 
 
         // main render
@@ -225,10 +223,13 @@ class Restaurants extends Component {
                     // display input of text
                     <div > We are sorry but your browser does not support Geolocation < /div>
                     :!this.props.isGeolocationEnabled ? 
-                    <div> Getting your inner foodie < /div> :
+                    <div> Getting your inner foodie </div> :
                     this.props.coords ?
                     <div>
-                    <Nav changeMode = { this.changeMode.bind(this) }/> 
+                    <Nav 
+                    saved={()=>{this.getRestaurants()}}
+                    changeMode = { this.changeMode.bind(this) }
+                    /> 
                     {this.renderView()} 
                     </div>: 
                     <div> Retriving suggestions </div>
