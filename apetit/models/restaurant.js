@@ -15,7 +15,7 @@ const Restaurants ={
   },
 
 
-	delete: (id)=>{ db.none('DELETE FROM restaurants WHERE  id= $1', [id])}
+	delete: (id) => db.none('DELETE FROM restaurants WHERE id = $1', [id])
 };
 
 

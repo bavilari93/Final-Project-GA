@@ -135,8 +135,17 @@ class Restaurants extends Component {
     }
 
     // delete data
-    delete(){
-
+    delete(restaurant){
+        console.log(restaurant);
+        axios.delete(`${this.state.url}/${restaurant.id}`)
+            .then(res =>{
+                this.setState(prev =>{
+                    prev.saved = prev.saved.filter( s=> s.id !== restaurant.id);
+                    prev.mode = "restaurants";
+                    prev.current = false;
+                    return prev;
+                })
+            })
     }
 
     // mode changes from navbar and when click on one restaurant
@@ -188,7 +197,8 @@ class Restaurants extends Component {
             console.log("im inside the render of one restaurant")
             return ( 
                 <Restaurant 
-                restaurant= {this.state.current}/>
+                restaurant= {this.state.current}
+                />
                 ) 
         }else if (this.state.mode === "restaurants"){
             console.log("im inside the render of restaurants", this.state.mode)

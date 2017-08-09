@@ -1,7 +1,17 @@
 DROP TABLE  IF EXISTS restaurants CASCADE; 
+DROP TABLE IF EXISTS users CASCADE;
+
+CREATE TABLE users(
+id SERIAL PRIMARY KEY, 
+email VARCHAR NOT NULL UNIQUE,
+location VARCHAR NOT NULL,
+password VARCHAR NOT NULL
+)
+
 
 CREATE TABLE restaurants(
 id BIGSERIAL PRIMARY KEY, 
+user_id INT REFERENCES users(id),
 name VARCHAR NOT NULL,
 location VARCHAR(255) NOT NULL,  
 latitude FLOAT NOT NULL,
@@ -13,6 +23,8 @@ cuisines VARCHAR (255)NOT NULL,
 ratingcolor VARCHAR NOT NULL,
 aggregaterating VARCHAR NOT NULL
 );
+
+
 
 
 INSERT INTO restaurants (name, location, latitude, longitude, averagecost, pricerange, thunmpic, cusines, ratingcolor, aggregaterating)VALUES 

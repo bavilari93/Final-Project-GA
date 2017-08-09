@@ -22,16 +22,15 @@ nav div:hover{
 
 /*all restaurants search */
 .restaurant-result{
-background-color: rgb(204, 204, 204);
+background-color: #C5E3E8;
 margin-top: 30px;
-
 
 }
 
 .restaurant{
-  width: 300px;
-  max-width: 400px;
-  height: 500px;
+  width: 500px;
+  max-width: 600px;
+  height: 300px;
   margin: 20px auto;
   margin-left: 20px;
   padding: 30px;
