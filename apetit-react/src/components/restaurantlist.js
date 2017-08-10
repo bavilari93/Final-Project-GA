@@ -11,18 +11,18 @@ class RestaurantList extends Component {
             }}
             >{restaurant.name}</h2>
 				<img src={restaurant.thunmpic} alt={restaurant.name}/>
-				<span> </span> 
+				<div className="result-info">
+				<div className="content">
 				<p>location: {restaurant.location}</p>
 				<p>Average Cost{restaurant.averagecost}</p>
 				<p>Price Range for Two{restaurant.pricerange}</p>
 				<p>Cusine:{restaurant.cuisines}</p>
+				</div>
+				</div>
 				<div
             className="button"
             onClick={()=>{this.props.button.onClick(restaurant)}}
-            ><p>{this.props.button.text}</p></div>
-
-
-
+            >{this.props.button.text}</div>
 				</div>
 
 				)

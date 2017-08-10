@@ -22,35 +22,85 @@ nav div:hover{
 
 /*all restaurants search */
 .restaurant-result{
-background-color: #C5E3E8;
-margin-top: 30px;
-
+background-color: #FFF9F2;
+width: 100vw;
+margin:0 auto;
+margin-top: 50px;
 }
 
 .restaurant{
-  width: 500px;
-  max-width: 600px;
-  height: 300px;
-  margin: 20px auto;
-  margin-left: 20px;
+  width: 80vw;
+  max-width:35vw;
+  height: 50vh;
+  margin-top: 80px;
+  margin-right: 100px;
+  margin-left: 30px;
   padding: 30px;
   background-color: rgb(0, 0, 51);
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   display: inline-block;
+}
+
+.result-info{
+  color:black;
+  background-color: white;
+  max-width: 90vw;
+  height: 35vh;
+  padding: 20px;
+  left:-50px; 
+  top: -200px;
+  float:left;
+  position: relative;
+  
+}
+
+.content{
+  max-width: 300px;
+}
+
+.button{
+  height: 30px;
+  width:100px;
+  color: #CBA6B7;
+  margin-top: 112px;
+  background-color: #565264;
+  position: absolute;
 
 }
 
+
+img{
+  height: 45vh;
+  width: 45vw;
+  max-width: 45vh;
+  position: relative;
+  z-index:1;
+  left: 180px;
+  top:60px;
+  box-shadow: 0px 4px 4px  rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+
 h2{
-  color:white;
+color:#CBA6B7;
+font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+  letter-spacing: 0px;
+  word-spacing: -2px;
+   z-index:100;
+   font-size: 40px;
+   position: relative;
+   margin-top: -80px;
+   margin-bottom: -50px;
+   margin-left: -70px;
+
 }
 
 p{
-  color: white;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+  color:gray;
 }
-img{
-  height: 200px;
-  width: 250px;
-}
+
+
 /*form */
 
 form {
@@ -62,8 +112,9 @@ input[type=text] {
   -webkit-transition: width 0.2s ease-in-out;
   transition: width 0.2s ease-in-out;
   border: 0px solid transparent;
-  border-bottom: 2px solid #ADE3E5;
+  border-bottom: 3px solid #C5E3E8;
   outline: 0px solid transparent;
+  background-color: white;
   font-size: .9em;
   text-align: center;
  
@@ -73,3 +124,49 @@ input[type=text] {
 input[type=text]:focus {
     width: 30%;
 }
+
+/*inputs range*/
+input[type=range] {
+  margin-left: 40px;
+    -webkit-appearance: none;
+    background-color: #C5E3E8;
+    width: 200px;
+    height:10px;  
+    outline-width: 0; 
+    margin-top: 25px;
+}
+input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #565264;
+    opacity: 0.5;
+    width: 10px;
+    height: 26px;
+}
+
+/*auth forms*/
+
+.auth-form, .content{
+  width: 100vw;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #FFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+h1{
+  font-weight: 300;
+  font-size: 2em;
+  margin: 10px 0;
+}
+
+
+.auth-form form{
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
