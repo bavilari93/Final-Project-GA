@@ -15,7 +15,7 @@ token VARCHAR NOT NULL
 
 CREATE TABLE restaurants(
 id BIGSERIAL PRIMARY KEY, 
--- user_id INT REFERENCES users(id),
+user_id INT REFERENCES users(id),
 name VARCHAR NOT NULL,
 location VARCHAR(255) NOT NULL,  
 latitude FLOAT NOT NULL,
