@@ -34,6 +34,7 @@ app.use('/login', require('./controllers/sessions'));
 
 
 app.use('/api', require('./controllers/restaurant.js'));
+app.use('/votes', require('./controllers/votes'));
 
 app.listen(PORT, ()=> console.log('Server listening on port ❤ 💩', PORT))
 

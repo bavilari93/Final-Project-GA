@@ -4,8 +4,8 @@ Restaurant = require('../models/restaurant');
 
 router.post('/', (req, res) => {
     console.log('this is post and resiving info from react', req.body);
-    const { name, location, latitude, longitude, averagecost, pricerange, thunmpic, cuisines, ratingcolor, aggregaterating, user_id } = req.body
-    Restaurant.create(name, location, latitude, longitude, averagecost, pricerange, thunmpic, cuisines, ratingcolor, aggregaterating, user_id)
+    const { restaurant_id, name, location, latitude, longitude, averagecost, pricerange, thunmpic, cuisines, ratingcolor, aggregaterating, user_id } = req.body
+    Restaurant.create(restaurant_id, name, location, latitude, longitude, averagecost, pricerange, thunmpic, cuisines, ratingcolor, aggregaterating, user_id)
         .then((data) => {
             res.json(data);
         })

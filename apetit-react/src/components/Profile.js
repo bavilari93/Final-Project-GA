@@ -9,6 +9,7 @@ const Content = (props) => {
       <p>Your email address is: {props.user.email}</p>
       <p>You have a cookie set to: {props.user.token}</p>
       <p> you have this id : {props.user.id}</p>
+      <p> {props.longitud}</p>
       <button onClick={props.logout}>Click here to log out!</button>
     </div>
   )

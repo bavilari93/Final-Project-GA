@@ -6,9 +6,10 @@ import RestaurantList from './restaurantlist'
 import Nav from './nav'
 import Search from './searchfrom'
 import Restaurant from './restaurant'
+import Votes from './votes'
 import Cookies from '../helpers/Cookies';
 import UserAuth from './UserAuth';
-import Content from './Content'
+import Content from './Profile'
 
 
 class Restaurants extends Component {
@@ -25,7 +26,8 @@ class Restaurants extends Component {
             current: false,
             user: false,
             url: 'http://localhost:8000',
-            user_id:''
+            user_id:'',
+            longitude: 2
         }
     }
 
@@ -112,6 +114,7 @@ logout(){
             return restaurant['restaurant'] ? true : false
         }).map(restaurant => {
             return {
+                restaurant_id: restaurant['restaurant'].id,
                 name: restaurant['restaurant'].name ? restaurant['restaurant'].name : "N/A",
                 location: restaurant['restaurant'].location.address ? restaurant['restaurant'].location.address : "N/A",
                 latitude: restaurant['restaurant'].location.latitude ? restaurant['restaurant'].location.latitude : 40.7317696,
@@ -125,7 +128,6 @@ logout(){
             }
         })
     }
-
 
 
      getRestaurants() {
@@ -144,7 +146,8 @@ logout(){
     // save restaurant from api 
     save(data) {
         console.log(data)
-      
+
+        let restaurant_id= data.restaurant_id
         let name = data.name
         let location = data.location
         let latitude =  data.latitude
@@ -164,6 +167,7 @@ logout(){
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    restaurant_id: restaurant_id, 
                     name: name,
                     location: location,
                     latitude: latitude,
@@ -309,7 +313,10 @@ logout(){
             <Content 
             logout={this.logout.bind(this)} 
             user={this.state.user} 
+            longitud= {this.props.coords.longitude}
             />
+
+            <Votes/>
         </div>
       )
     }

@@ -57,7 +57,7 @@ class SignUp extends Component {
 
            <label htmlFor='location'>Location</label>
           <input value={this.state.inputs.location}
-            id='location' name='location' type='text'
+            id='location' name='Borough' type='text'
             onChange={e => this.changeInput(e, 'location')}
           />
 

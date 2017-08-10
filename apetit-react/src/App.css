@@ -45,7 +45,7 @@ margin-top: 50px;
   color:black;
   background-color: white;
   max-width: 60vw;
-  height: 35vh;
+  height: 250px;
   padding: 20px;
   left:-50px; 
   top: -200px;
@@ -56,6 +56,8 @@ margin-top: 50px;
 
 .content{
   width:20vw;
+  height: 200px;
+  margin-top: -50px;
   padding:30px;
   margin-left:-40px;
 }
