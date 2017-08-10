@@ -24,7 +24,8 @@ class Restaurants extends Component {
             mode: false,
             current: false,
             user: false,
-            url: 'http://localhost:8000'
+            url: 'http://localhost:8000',
+            user_id:''
         }
     }
 
@@ -36,6 +37,7 @@ class Restaurants extends Component {
     // user 
 
      initUser() {
+        console.log(this.state.user);
         // get token from cookie 
         const token = Cookies.get('token');
 
@@ -102,16 +104,7 @@ logout(){
     }
 
 
-    getRestaurants() {
-        console.log('this is happening')
-        axios.get(`${this.state.url}/api`)
-            .then(data => {
-                this.setState({
-                    saved: data.data,
-                    mode:"restaurants"
-                })
-            })
-    }
+
     // parsed result from api
 
     parsedResults(data) {
@@ -131,6 +124,22 @@ logout(){
                 aggregaterating: restaurant['restaurant'].user_rating.aggregate_rating ? restaurant['restaurant'].user_rating.aggregate_rating : "N/A"
             }
         })
+    }
+
+
+
+     getRestaurants() {
+        let id = this.state.user.id
+        console.log(id)
+      
+        axios.get(` ${this.state.url}/api/${id}`)
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    saved: data.data,
+                    mode:"restaurants"
+                })
+            })
     }
     // save restaurant from api 
     save(data) {
@@ -164,7 +173,8 @@ logout(){
                     thunmpic: thunmpic,
                     cuisines: cuisines,
                     ratingcolor: ratingcolor,
-                    aggregaterating: aggregaterating
+                    aggregaterating: aggregaterating, 
+                    user_id: this.state.user.id
                 })
             })
             .then((response) => {
@@ -178,8 +188,10 @@ logout(){
 
     // delete data
     delete(restaurant){
+        let id = this.state.user.id
         console.log(restaurant);
-        axios.delete(`${this.state.url}/${restaurant.id}`)
+        console.log(id)
+        axios.delete(`${this.state.url}/api/${restaurant.id}/${id}`)
             .then(res =>{
                 this.setState(prev =>{
                     prev.saved = prev.saved.filter( s=> s.id !== restaurant.id);
@@ -244,6 +256,7 @@ logout(){
                 <div>
                 <Nav 
                     saved={()=>{this.getRestaurants()}}
+                    id={this.state.user}
                     changeMode = { this.changeMode.bind(this) }
                     /> 
                 <Restaurant 
@@ -288,11 +301,15 @@ logout(){
     } else {
       return (
         <div>
-         <Nav 
-                    saved={()=>{this.getRestaurants()}}
-                    changeMode = { this.changeMode.bind(this) }
-                    /> 
-        <Content logout={this.logout.bind(this)} user={this.state.user} />
+             <Nav 
+                saved={()=>{this.getRestaurants()}}
+                changeMode = { this.changeMode.bind(this) }
+                logout={this.logout.bind(this)} 
+            /> 
+            <Content 
+            logout={this.logout.bind(this)} 
+            user={this.state.user} 
+            />
         </div>
       )
     }
