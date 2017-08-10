@@ -23,7 +23,7 @@ class Search extends Component {
             input type = "range"
             name = "content"
             ref = "range"
-            value = { this.props.range } min = "0"
+            value = { this.props.range } min = "1"
             max = "11"
             onChange = {
                 (e) => { this.props.changeRange(e) } }

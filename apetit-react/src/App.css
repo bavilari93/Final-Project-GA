@@ -44,7 +44,7 @@ margin-top: 50px;
 .result-info{
   color:black;
   background-color: white;
-  max-width: 90vw;
+  max-width: 60vw;
   height: 35vh;
   padding: 20px;
   left:-50px; 
@@ -55,7 +55,9 @@ margin-top: 50px;
 }
 
 .content{
-  max-width: 300px;
+  width:20vw;
+  padding:30px;
+  margin-left:-40px;
 }
 
 .button{
@@ -145,14 +147,14 @@ input[type="range"]::-webkit-slider-thumb {
 
 /*auth forms*/
 
-.auth-form, .content{
+/*.auth-form, .content{
   width: 100vw;
   max-width: 600px;
   margin: 20px auto;
   padding: 30px;
   background-color: #FFF;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
+}*/
 
 h1{
   font-weight: 300;
@@ -161,12 +163,12 @@ h1{
 }
 
 
-.auth-form form{
+/*.auth-form {
   display: -webkit-flex;
   display: -ms-flex;
   display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-}
+}*/
 

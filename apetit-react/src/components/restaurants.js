@@ -6,7 +6,9 @@ import RestaurantList from './restaurantlist'
 import Nav from './nav'
 import Search from './searchfrom'
 import Restaurant from './restaurant'
-import RestaurantDb from './restaurantbd'
+import Cookies from '../helpers/Cookies';
+import UserAuth from './UserAuth';
+import Content from './Content'
 
 
 class Restaurants extends Component {
@@ -21,10 +23,50 @@ class Restaurants extends Component {
             saved:[],
             mode: false,
             current: false,
-            url: 'http://localhost:8000/api'
+            user: false,
+            url: 'http://localhost:8000'
         }
     }
 
+
+    componentDidMount() {
+        this.initUser();
+    }
+
+    // user 
+
+     initUser() {
+        // get token from cookie 
+        const token = Cookies.get('token');
+
+        if (token && token !== ''){
+            axios.get(`${this.state.url}/users/validate`, {
+                params: { auth_token: token}
+            })
+            .then(res =>{
+                console.log(res)
+                // change the mode here to the mode of profile 
+                this.setState({user:res.data, mode: 'content' })
+            })
+            .catch(err =>{
+                Cookies.set('token', '')
+                this.setState({user:false, mode:'auth'});           
+            })
+
+        }else{
+            this.setState({mode:'auth'});
+        }
+    }
+// mthod to set up the content for only users 
+    setUser(user){
+        Cookies.set('token', user.token);
+        this.setState({user: user, mode: 'content'})
+    }
+// log out method 
+logout(){
+    Cookies.set('token', '');
+    this.setState({user:false, mode:'auth'})
+}
     // Search form change 
     handleSearchChange(event) {
         this.setState({ restaurant: event.target.value });
@@ -62,7 +104,7 @@ class Restaurants extends Component {
 
     getRestaurants() {
         console.log('this is happening')
-        axios.get(this.state.url)
+        axios.get(`${this.state.url}/api`)
             .then(data => {
                 this.setState({
                     saved: data.data,
@@ -106,7 +148,7 @@ class Restaurants extends Component {
         let aggregaterating = data.aggregaterating
           console.log(cuisines)
 
-        fetch(this.state.url, {
+        fetch(`${this.state.url}/api`, {
                 method: 'POST',
                 headers: {
                     'accept': 'application/json',
@@ -176,29 +218,38 @@ class Restaurants extends Component {
             console.log("im inside the render of search")
             return ( 
                 <div>
-                <Search 
-                searchValue = { this.state.restaurant } 
-                changeValue = { this.handleSearchChange.bind(this) } 
-                range = { this.state.range } 
-                changeRange = { this.handleRangeChange.bind(this) } 
-                submit = { this.handleSubmit.bind(this) }
+                <Nav 
+                    saved={()=>{this.getRestaurants()}}
+                    changeMode = { this.changeMode.bind(this) }
                 /> 
+                <Search 
+                    searchValue = { this.state.restaurant } 
+                    changeValue = { this.handleSearchChange.bind(this) } 
+                    range = { this.state.range } 
+                    changeRange = { this.handleRangeChange.bind(this) } 
+                    submit = { this.handleSubmit.bind(this) }/> 
                  <RestaurantList 
-                restaurants = { this.state.results } 
-                setRestaurant = {this.setRestaurant.bind(this) } 
-                button = {{
-                    onClick: this.save.bind(this),
-                    text:"save"
-                }}
+                    restaurants = { this.state.results } 
+                    setRestaurant = {this.setRestaurant.bind(this) } 
+                    button = {{
+                        onClick: this.save.bind(this),
+                        text:"save"
+                    }}
                 /> 
                 </div>               
             )
         }else if(this.state.mode === "restaurant") {
             console.log("im inside the render of one restaurant")
             return ( 
+                <div>
+                <Nav 
+                    saved={()=>{this.getRestaurants()}}
+                    changeMode = { this.changeMode.bind(this) }
+                    /> 
                 <Restaurant 
-                restaurant= {this.state.current}
+                    restaurant= {this.state.current}
                 />
+                </div>
                 ) 
         }else if (this.state.mode === "restaurants"){
             console.log("im inside the render of restaurants", this.state.mode)
@@ -206,6 +257,10 @@ class Restaurants extends Component {
                 // this i have to pass the methods that communicate with the backend
                 // use search to filter the saved info 
                 <div>
+                <Nav 
+                    saved={()=>{this.getRestaurants()}}
+                    changeMode = { this.changeMode.bind(this) }
+                    /> 
                 <RestaurantList 
                     restaurants = { this.state.saved } 
                     setRestaurant = { this.setRestaurant.bind(this) }
@@ -216,11 +271,31 @@ class Restaurants extends Component {
                         /> 
                 </div >
             )
-        }else{
-            return ( 
-            <p> loading </p>
-            )
-        }
+        }else if(this.state.mode === 'loading'){
+      return(
+        <div className="loading">
+          <img src="https://s-media-cache-ak0.pinimg.com/originals/8b/a8/ce/8ba8ce24910d7b2f4c147359a82d50ef.gif"
+            alt="loading" />
+        </div>
+      )
+    } else if(this.state.mode === 'auth') {
+      return (
+        <UserAuth
+          setUser={this.setUser.bind(this)}
+          url={this.state.url}
+        />
+      )
+    } else {
+      return (
+        <div>
+         <Nav 
+                    saved={()=>{this.getRestaurants()}}
+                    changeMode = { this.changeMode.bind(this) }
+                    /> 
+        <Content logout={this.logout.bind(this)} user={this.state.user} />
+        </div>
+      )
+    }
     }
 
 
@@ -236,10 +311,6 @@ class Restaurants extends Component {
                     <div> Getting your inner foodie </div> :
                     this.props.coords ?
                     <div>
-                    <Nav 
-                    saved={()=>{this.getRestaurants()}}
-                    changeMode = { this.changeMode.bind(this) }
-                    /> 
                     {this.renderView()} 
                     </div>: 
                     <div> Retriving suggestions </div>
