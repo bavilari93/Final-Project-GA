@@ -23,6 +23,11 @@ class RestaurantList extends Component {
             className="button"
             onClick={()=>{this.props.button.onClick(restaurant)}}
             >{this.props.button.text}</div>
+
+			<button
+            className="button-vote"
+            onClick={()=>{this.props.vote.onClick(restaurant)}}
+            >{this.props.vote.text}</button>
 				</div>
 
 				)

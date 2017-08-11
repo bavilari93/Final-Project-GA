@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import RestaurantList from './restaurantlist'
 
 class Votes extends Component{
 
@@ -13,6 +14,14 @@ class Votes extends Component{
 			uservoted: false		
 		}
 	}
+
+	// i have to check if the restaurant id already exixt , if not save it in the data base 
+	// if it exist 
+	// check if user has voted for that one 
+	// if not add vote 
+
+
+
 // method to check if the latitude and latitude is near to the restaurant in the database 
 
 // method to update the number of users that has click on that 
@@ -21,7 +30,15 @@ class Votes extends Component{
 
 	render(){
 		return(
-			<div> this is votes< /div> 
+			<div> 
+
+			
+
+
+
+
+			< /div> 
+
 
 
 

@@ -27,7 +27,9 @@ class Restaurants extends Component {
             user: false,
             url: 'http://localhost:8000',
             user_id:'',
-            longitude: 2
+            longitude: 2, 
+            votedRestaurantId:'', 
+            user_vote: [1]
         }
     }
 
@@ -143,6 +145,95 @@ logout(){
                 })
             })
     }
+
+    // check if user if user is true , if true sorry you voted 
+    // if false get restaurant id and check if it's the same to any 
+    // in the db , if equal, just augment caunter(state)
+    // if not equal save and then add vote 
+
+    // one button will handle all of this ----
+
+
+    getvotes(restid, userVoted, user_id,votedRestaurantsid){
+        console.log(restid)
+      
+             let restaid = restid
+        axios.get(`${this.state.url}/votes/${restid}/${user_id}`)
+        .then(data=>{
+            console.log(data);
+            this.setState({votedRestaurantsid: data.restaurant_id})
+            // other method to pass data to setsate 
+             if(votedRestaurantsid === ""){
+                console.log ('im inside the if')
+                this.postVote(userVoted, user_id, restid);
+            }else{
+                console.log('NO!!!!!!!!!!!')
+            }
+
+            // have the set this state for votedRestaurantsid
+            // then compare it to the one i got from the api
+        }).catch((err)=>console.log(err))
+    }
+
+
+    postVote(uservoted, user_id, restid){
+        console.log(uservoted, user_id, restid);
+         fetch(`${this.state.url}/votes`,{
+                method:'POST', 
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                 body: JSON.stringify({
+                    uservoted:uservoted,
+                    user_id:user_id,
+                    restaurant_id:restid
+                 })
+            }).then((response) => {
+                console.log(response);
+                return response.json()
+            })
+            .then((body) => {
+                console.log(body)
+            })
+
+    }
+
+    // post vote 
+    vote(restaurant_id){ 
+
+        this.setState({user_vote:1})
+        let user_id = this.state.user.id
+          // this one comes from the api
+        let restid= restaurant_id.restaurant_id
+        // this one is going to be the array to update votes
+        let userVoted= this.state.user_vote
+        // this one updates sate from data base 
+        let votedRestaurantsid= this.state.votedRestaurantsid
+        console.log(restid)
+        console.log(userVoted);
+
+        // i need to see if something exist on the database to update a state
+        // ?then i compare
+
+        // first get to update the state of votedrestaurant 
+        // and then compare 
+
+// if it's equal only aument the uservoted column on the postvote,
+        if( votedRestaurantsid === restid){
+            this.postVote(userVoted, user_id, restid);         
+        }else {
+            this.getvotes(restid, userVoted, user_id, restid,votedRestaurantsid);
+            // fist i have to check if a key like that exist in restaurants table 
+            // if it doesn't , it will save the restaurant first in restaurants table
+            // this one is going to save the vote if it doesn't exist
+  
+            // send the other ver too be able to use them there
+           
+        }   
+    }
+
+
     // save restaurant from api 
     save(data) {
         console.log(data)
@@ -251,6 +342,10 @@ logout(){
                         onClick: this.save.bind(this),
                         text:"save"
                     }}
+                     vote = {{
+                        onClick: this.vote.bind(this), 
+                        text:"vote"
+                    }}
                 /> 
                 </div>               
             )
@@ -285,7 +380,16 @@ logout(){
                         onClick: this.delete.bind(this),
                         text:"delete"
                         }}
+                    vote = {{
+                        onClick: this.vote.bind(this), 
+                        text:"vote"
+                    }}
                         /> 
+
+                    <Votes
+
+                    />
+                   
                 </div >
             )
         }else if(this.state.mode === 'loading'){
