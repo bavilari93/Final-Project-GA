@@ -4,10 +4,9 @@ const db = require('../db/config');
 
 const Votes = {
 
-findVotedByUser:(restaurant_id, user_id)=> db.one('SELECT*FROM voted_restaurants, restaurants  WHERE restaurants.restaurant_id=$1 AND voted_restaurants.user_id=$2', [restaurant_id, user_id]),
+findVotedByUser:(restaurant_id, user_id)=> db.one('SELECT * FROM voted_restaurants, restaurants WHERE restaurants.restaurant_id=$1 AND voted_restaurants.user_id=$2;', [restaurant_id, user_id]),
 
-// ('SELECT * FROM voted_restaurants, restaurants WHERE restaurant_id=$1 AND user_id=$2', [restaurant_id, user_id]), 
-
+findRestaurantIdVoted:(user_id)=> db.manyOrNone('SELECT restaurant_id FROM voted_restaurants WHERE user_id=$1;', [user_id]),
 // findMostVoted:(restaurantId)=> db.manyOrNone()
 
 create:(uservoted, userId, restaurant_id)=>{

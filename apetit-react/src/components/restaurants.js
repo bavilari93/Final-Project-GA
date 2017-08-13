@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import $ from 'jquery'
 import axios from 'axios';
 import { geolocated } from 'react-geolocated';
-import RestaurantList from './restaurantlist'
 import Nav from './nav'
+import RestaurantList from './restaurantlist'
 import Search from './searchfrom'
 import Restaurant from './restaurant'
-import Votes from './votes'
 import Cookies from '../helpers/Cookies';
 import UserAuth from './UserAuth';
 import Content from './Profile'
@@ -29,7 +28,8 @@ class Restaurants extends Component {
             user_id:'',
             longitude: 2, 
             votedRestaurantId:'', 
-            user_vote: 0
+            user_vote: 0, 
+            voted_restaurant_id:[]
         }
     }
 
@@ -152,27 +152,65 @@ logout(){
     // if not equal save and then add vote 
 
     // one button will handle all of this ----
-
+ 
 
     getvotes(restid, userVoted, user_id,votedRestaurantsid){
-        console.log(restid)
-      
-             let restaid = restid
-        axios.get(`${this.state.url}/votes/${restid}/${user_id}`)
-        .then(data=>{
-            console.log(data);
-            this.setState({votedRestaurantsid: data.restaurant_id})
-            // other method to pass data to setsate 
-             if(votedRestaurantsid === ""){
-                console.log ('im inside the if')
-                this.postVote(userVoted, user_id, restid);
-            }else{
-                console.log('NO!!!!!!!!!!!')
-            }
+        console.log('this is votes');
+ // do the axios call from the table of restaurants
+        // first get a array of the colum of restaurants 
+        axios.get(`${this.state.url}/api/1`)
+            .then(data =>{ 
+                this.setState({voted_restaurant_id:data.data})
+                console.log("this is the update", this.state.voted_restaurant_id)
+                this.DatabaseIdCheck(restid,userVoted, user_id);
+                
+                // si no da con esto entonces poner coma
+             })
+        // tha tuser had voted - saved it as a [] in the array
 
-            // have the set this state for votedRestaurantsid
-            // then compare it to the one i got from the api
-        }).catch((err)=>console.log(err))
+        // console.log(restid)
+        // this one doesn't work yet
+      
+        //      let restaid = restid
+        // axios.get(`${this.state.url}/votes/${restid}/${user_id}`)
+        // .then(data=>{
+        //     console.log(data);
+        //     this.setState({votedRestaurantsid: data.restaurant_id})
+        //     // other method to pass data to setsate 
+        //      if(votedRestaurantsid === ""){
+        //         console.log ('im inside the if')
+        //         this.postVote(userVoted, user_id, restid);
+        //     }else{
+        //         console.log('NO!!!!!!!!!!!')
+        //     }
+
+        //     // have the set this state for votedRestaurantsid
+        //     // then compare it to the one i got from the api
+        // }).catch((err)=>console.log(err))
+    }
+
+    DatabaseIdCheck(restid,userVoted, user_id){
+        let restresult= this.state.saved
+        let restidToI= parseInt(restid);
+        let restidState = this.state.voted_restaurant_id
+         console.log(typeof restidState[0].restaurant_id)
+         console.log()
+
+         for(let i = 0; i < restidState.length; i++){
+
+                console.log(restidState[i].restaurant_id)
+                if(restidToI === restidState[i].restaurant_id){
+                    console.log("this is the same");
+                     this.postVote(userVoted, user_id, restid);
+
+                }else{
+                    // to save it i have to pass an index from votes to save that one to my data base
+                    console.log('try again, or post save this restaurant');
+
+
+
+                }
+            }
     }
 
 
@@ -201,9 +239,7 @@ logout(){
 // create a new method to get just that route 
 // just to get postgreat to return true if the id exist 
     // post vote 
-    vote(restaurant_id){ 
-
-
+    vote(restaurant_id, index){ 
 
         // this.state = {
 
@@ -232,20 +268,6 @@ logout(){
         //     })
         // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         this.setState( { user_vote: 1 } )
 
         let user_id = this.state.user.id
@@ -265,9 +287,9 @@ logout(){
         // and then compare 
 
 // if it's equal only aument the uservoted column on the postvote,
-        if( votedRestaurantsid === restid){
-            this.postVote(userVoted, user_id, restid);         
-        }else {
+        // if( votedRestaurantsid === restid){
+                     // this.postVote(userVoted, user_id, restid);         
+        // }else {
             this.getvotes(restid, userVoted, user_id, restid,votedRestaurantsid);
             // fist i have to check if a key like that exist in restaurants table 
             // if it doesn't , it will save the restaurant first in restaurants table
@@ -275,7 +297,7 @@ logout(){
   
             // send the other ver too be able to use them there
            
-        }   
+        // }   
     }
 
 
@@ -434,12 +456,9 @@ logout(){
                         }}
                     vote = {{
                         onClick: this.vote.bind(this), 
-                        text:"vote"
+                        text:"votes"
                     }}
                         /> 
-
-                    <Votes
-
                     />
                    
                 </div >
@@ -476,12 +495,10 @@ logout(){
             longitud= {this.props.coords.longitude}
             />
 
-            <Votes/>
         </div>
       )
     }
     }
-
 
         // main render
         render() {

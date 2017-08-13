@@ -1,7 +1,11 @@
 import React , {Component} from 'react'
-import { Card, Icon, Image, Button } from 'semantic-ui-react'
+import { Card, Image, Button } from 'semantic-ui-react'
+
+
 
 class RestaurantList extends Component { 
+
+
 	renderRestaurant(){
 		return this.props.restaurants.map((restaurant, index)=>{
 			return(
@@ -35,7 +39,7 @@ class RestaurantList extends Component {
 					        </Button>
 							<Button basic color='grey'
 							// i need to pass the key of the restaurant or whole to only have the vote there
-					            onClick={()=>{this.props.vote.onClick(restaurant)}}
+					            onClick={()=>{this.props.vote.onClick(restaurant, index)}}
 					            >{this.props.vote.text}
 				             </Button>
 				         

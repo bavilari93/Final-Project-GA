@@ -13,6 +13,15 @@
 	  		.catch(err => console.log('votes controllers post error', err))  
 	  })
 
+	  router.get('/:userId', (req, res)=>{
+	  	console.log( 'this is the user I received', req.params.userId);
+	  	const user = req.params.userId;
+	  	Votes.findRestaurantIdVoted(user)
+	  	.then((data)=>{
+	  		res.json(data)
+	  	})
+	  })
+
 	  router.get('/:restaurant/:id', (req, res)=>{
 	  	let restaurant_id= req.params.restaurant;
 	  	let user_id= req.params.id;

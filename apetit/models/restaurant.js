@@ -6,6 +6,7 @@ const Restaurants ={
 
 	findById: (id, userId)=>db.one(`SELECT * FROM restaurants WHERE  id= $1 AND user_id=$2`, [id, userId]), 
 
+	findRestaurantIdExist:()=> db.manyOrNone(`SELECT restaurant_id FROM Restaurants`),
 
   create: (restaurant_id, name, location, latitude, longitude, averagecost, pricerange, thunmpic, cuisines, ratingcolor, aggregaterating, userId) => {
     return db.one(

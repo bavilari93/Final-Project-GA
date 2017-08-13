@@ -12,6 +12,15 @@ router.post('/', (req, res) => {
         .catch(err => console.log('CONTROLLER POST ERROR', err))
 })
 
+router.get('/1', (req, res)=>{
+    console.log( 'this is what I received from react in express');
+    Restaurant.findRestaurantIdExist()
+        .then((data)=>{
+            res.json(data);
+        })
+        .catch(err => console.log('controller error in get', err))
+});
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     console.log(id)

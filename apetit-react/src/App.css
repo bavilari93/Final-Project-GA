@@ -10,10 +10,10 @@ margin-top: 180px;
 /*profile */
 
 .profile{
-  margin-left: 30%;
-  margin-right: 30%;
-  margin-top: 200px;
-  position: relative;
+  margin-left: 200px;
+  margin-right: 50px;
+  margin-top:140px;
+  position: absolute;
 
 }
 

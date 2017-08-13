@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Menu, Segment } from 'semantic-ui-react'
+import {Grid, Menu } from 'semantic-ui-react'
 const Nav = (props) => {
     let mode = props.mode
     console.log(mode)
