@@ -154,19 +154,29 @@ logout(){
     // one button will handle all of this ----
  
 
-    getvotes(restid, userVoted, user_id,votedRestaurantsid){
-        console.log('this is votes');
- // do the axios call from the table of restaurants
-        // first get a array of the colum of restaurants 
+    getvotes(restid, userVoted, user_id,votedRestaurantsid, index){
+        let indexPassed = index;
         axios.get(`${this.state.url}/api/1`)
             .then(data =>{ 
                 this.setState({voted_restaurant_id:data.data})
                 console.log("this is the update", this.state.voted_restaurant_id)
-                this.DatabaseIdCheck(restid,userVoted, user_id);
-                
-                // si no da con esto entonces poner coma
+                this.DatabaseIdCheck(restid,userVoted, user_id, indexPassed);
              })
-        // tha tuser had voted - saved it as a [] in the array
+    }
+
+
+ 
+            //use this one take it out from above  ------dataIterator
+            // and do a while in dataIterator 
+            // after this i just pull out the info of joint table to display 
+
+            // after update table votes and display total votes on saved
+
+            // give suggestion of more voted on profile page
+
+
+
+          // tha tuser had voted - saved it as a [] in the array
 
         // console.log(restid)
         // this one doesn't work yet
@@ -187,32 +197,26 @@ logout(){
         //     // have the set this state for votedRestaurantsid
         //     // then compare it to the one i got from the api
         // }).catch((err)=>console.log(err))
-    }
 
-    DatabaseIdCheck(restid,userVoted, user_id){
-        let restresult= this.state.saved
+    DatabaseIdCheck(restid,userVoted, user_id, index){
+        let restresult= this.state.results
         let restidToI= parseInt(restid);
         let restidState = this.state.voted_restaurant_id
-         console.log(typeof restidState[0].restaurant_id)
-         console.log()
-
-         for(let i = 0; i < restidState.length; i++){
-
-                console.log(restidState[i].restaurant_id)
-                if(restidToI === restidState[i].restaurant_id){
-                    console.log("this is the same");
+        let idArray = []
+        for(let i = 0; i < restidState.length; i++){
+        idArray.push(restidState[i].restaurant_id)
+        }
+        let indexArray= idArray.indexOf(restidToI)
+                if(restidToI === idArray[indexArray]){
+                    console.log('inside property of post vote')
                      this.postVote(userVoted, user_id, restid);
-
                 }else{
-                    // to save it i have to pass an index from votes to save that one to my data base
-                    console.log('try again, or post save this restaurant');
-
-
-
+                    // now i gotta pass this info to save 
+                    console.log('i gotta save this one', restresult[index]);
+                    this.save(restresult[index])
                 }
-            }
+          
     }
-
 
     postVote(uservoted, user_id, restid){
         console.log(uservoted, user_id, restid);
@@ -240,6 +244,8 @@ logout(){
 // just to get postgreat to return true if the id exist 
     // post vote 
     vote(restaurant_id, index){ 
+        let indexClicked = index
+        console.log('this is index from the click',indexClicked)
 
         // this.state = {
 
@@ -280,24 +286,8 @@ logout(){
         console.log(restid)
         console.log(userVoted);
 
-        // i need to see if something exist on the database to update a state
-        // ?then i compare
-
-        // first get to update the state of votedrestaurant 
-        // and then compare 
-
-// if it's equal only aument the uservoted column on the postvote,
-        // if( votedRestaurantsid === restid){
-                     // this.postVote(userVoted, user_id, restid);         
-        // }else {
-            this.getvotes(restid, userVoted, user_id, restid,votedRestaurantsid);
-            // fist i have to check if a key like that exist in restaurants table 
-            // if it doesn't , it will save the restaurant first in restaurants table
-            // this one is going to save the vote if it doesn't exist
-  
-            // send the other ver too be able to use them there
-           
-        // }   
+            this.getvotes(restid, userVoted, user_id, votedRestaurantsid, indexClicked);
+   
     }
 
 
@@ -459,7 +449,7 @@ logout(){
                         text:"votes"
                     }}
                         /> 
-                    />
+                 
                    
                 </div >
             )
