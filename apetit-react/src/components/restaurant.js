@@ -1,20 +1,29 @@
 import React from 'react'
+import { Card, Icon, Image, Button } from 'semantic-ui-react'
+
 
 const Restaurant = ( props)=>{
 	console.log(props)
 	return(
 
-		<div className="restaurant">
-				<h2>{props.restaurant.name}</h2>
-				<img src={props.restaurant.thunmpic} alt={props.restaurant.name}/>
-				<span> </span> 
-				<div className="result-info">
-				<p>location: {props.restaurant.location}</p>
-				<p>Average Cost{props.restaurant.averagecost}</p>
-				<p>Price Range for Two{props.restaurant.pricerange}</p>
-				<p>Cusine:{props.restaurant.cuisines}</p>
-				</div>
-				</div>
+			<Card  className="search-info" >
+
+					<Image src={props.restaurant.thunmpic} alt={props.restaurant.name}/>
+					<h1>
+					{props.restaurant.name}
+	           		</h1>
+	           		<Card.Meta>
+								Average Cost: {props.restaurant.averagecost}
+								Price Range for Two: {props.restaurant.pricerange}
+					</Card.Meta>
+					<Card.Description>
+						Cusine: {props.restaurant.cuisines}
+					</Card.Description>
+
+					<Card.Meta>
+						<span>location: {props.restaurant.location}</span>
+						</Card.Meta>
+			</Card>
 
 		)
 }

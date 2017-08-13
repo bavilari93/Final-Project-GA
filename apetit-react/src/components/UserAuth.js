@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login';
 import Signup from './Signup';
 
+
 class UserAuth extends Component {
   constructor(){
     super();
@@ -20,7 +21,9 @@ class UserAuth extends Component {
 
   render(){
     return this.state.mode === "login" ? (
+      <div>
       <Login {...this.props} toggleMode={this.toggleMode.bind(this)} />
+      </div>
     ) : (
       <Signup {...this.props} toggleMode={this.toggleMode.bind(this)} />
     )

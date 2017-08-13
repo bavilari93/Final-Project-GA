@@ -29,7 +29,7 @@ class Restaurants extends Component {
             user_id:'',
             longitude: 2, 
             votedRestaurantId:'', 
-            user_vote: [1]
+            user_vote: 0
         }
     }
 
@@ -198,18 +198,63 @@ logout(){
             })
 
     }
-
+// create a new method to get just that route 
+// just to get postgreat to return true if the id exist 
     // post vote 
     vote(restaurant_id){ 
 
-        this.setState({user_vote:1})
+
+
+        // this.state = {
+
+        //     voting: [
+        //                 restaurant_id: 4,
+        //                 voters: "2 5 8",
+        //                 counter: this.state.voting.voters.length
+        //             ]
+        // }
+
+
+        // voting.voters.split('');
+
+        // // now voters is an aray
+        // // of ints
+
+        // if( !this.state.voting.voters.contains( current_user) ) {
+            
+        //     newVoting = this.state.voting
+
+        //     newVoting.voters += " current_user"
+
+
+        //     this.setState({
+        //         voting: newVoting
+        //     })
+        // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        this.setState( { user_vote: 1 } )
+
         let user_id = this.state.user.id
           // this one comes from the api
-        let restid= restaurant_id.restaurant_id
+        let restid = restaurant_id.restaurant_id
         // this one is going to be the array to update votes
-        let userVoted= this.state.user_vote
+        let userVoted = this.state.user_vote
         // this one updates sate from data base 
-        let votedRestaurantsid= this.state.votedRestaurantsid
+        let votedRestaurantsid = this.state.votedRestaurantsid
         console.log(restid)
         console.log(userVoted);
 
@@ -328,6 +373,8 @@ logout(){
                 <Nav 
                     saved={()=>{this.getRestaurants()}}
                     changeMode = { this.changeMode.bind(this) }
+                    logout={this.logout.bind(this)} 
+                    mode={this.state.mode}
                 /> 
                 <Search 
                     searchValue = { this.state.restaurant } 
@@ -344,7 +391,7 @@ logout(){
                     }}
                      vote = {{
                         onClick: this.vote.bind(this), 
-                        text:"vote"
+                        text:this.state.user_vote
                     }}
                 /> 
                 </div>               
@@ -357,6 +404,8 @@ logout(){
                     saved={()=>{this.getRestaurants()}}
                     id={this.state.user}
                     changeMode = { this.changeMode.bind(this) }
+                    logout={this.logout.bind(this)} 
+                    mode={this.state.mode}
                     /> 
                 <Restaurant 
                     restaurant= {this.state.current}
@@ -372,7 +421,10 @@ logout(){
                 <Nav 
                     saved={()=>{this.getRestaurants()}}
                     changeMode = { this.changeMode.bind(this) }
+                    logout={this.logout.bind(this)} 
+                    mode={this.state.mode}
                     /> 
+                    <h1> Your Preferred Restaurants Nearby</h1>
                 <RestaurantList 
                     restaurants = { this.state.saved } 
                     setRestaurant = { this.setRestaurant.bind(this) }
@@ -401,10 +453,13 @@ logout(){
       )
     } else if(this.state.mode === 'auth') {
       return (
+
         <UserAuth
           setUser={this.setUser.bind(this)}
           url={this.state.url}
+
         />
+
       )
     } else {
       return (
@@ -413,6 +468,7 @@ logout(){
                 saved={()=>{this.getRestaurants()}}
                 changeMode = { this.changeMode.bind(this) }
                 logout={this.logout.bind(this)} 
+                 mode={this.state.mode}
             /> 
             <Content 
             logout={this.logout.bind(this)} 

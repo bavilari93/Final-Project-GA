@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Button, Segment, Form} from 'semantic-ui-react'
+
 
 class Login extends Component {
   constructor(){
@@ -37,26 +39,37 @@ class Login extends Component {
     return(
       <div className="auth-form">
         <h1>Log In</h1>
-        <form onSubmit={this.login.bind(this)}>
+
+        <Segment inverted>
+        <Form unstackable onSubmit={this.login.bind(this)}>
 
           <label htmlFor='email'>Email</label>
-          <input value={this.state.inputs.email}
-            id='email' name='email' type='email'
-            onChange={e => this.changeInput(e, 'email')}
+          <Form.Input 
+                label='Name'  
+                placeholder='Name' value={this.state.inputs.email}
+                id='email' name='email' type='email'
+                onChange={e => this.changeInput(e, 'email')}
           />
 
           <label htmlFor='password'>Password</label>
-          <input value={this.state.inputs.password}
-            id='password' name='password' type='password'
-            onChange={e => this.changeInput(e, 'password')}
+          <Form.Input 
+                label='Password'  
+                placeholder='Password'
+                value={this.state.inputs.password}
+                id='password' name='password' type='password'
+                onChange={e => this.changeInput(e, 'password')}
           />
 
-          <div className="form-buttons">
-            <button type="submit" className="form-button">Login</button>
-            <button onClick={this.props.toggleMode} className="form-button">Sign Up</button>
-          </div>
+            <Button primary
+            className="login"
+             type="submit" 
+             >Login</Button>
+            <Button secondary 
+            onClick={this.props.toggleMode} 
+            className="signup">Sign Up</Button>
 
-        </form>
+        </Form>
+        </Segment>
       </div>
     )
   }
