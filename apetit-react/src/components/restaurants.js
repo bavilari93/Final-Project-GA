@@ -16,30 +16,48 @@ class Restaurants extends Component {
         super(props)
         this.state = {
             // later I'm goint to be passing latitude , longitud and also other parameters
+            // restaurants that is cearched
             restaurant: "",
+            // search ranged 
             range: 2,
             data: [],
+            // result from api
             results: [],
+            // saved in sata base table restaurants 
             saved:[],
+            // modes to control what to display
             mode: false,
             current: false,
+            // maybe to restrict the vote only one 
             user: false,
-            url: 'http://localhost:8000',
+            // express route
+            url: 'http://localhost:8080',
+            // current user 
             user_id:'',
+            // remove this one from profile and here 
             longitude: 2, 
+            // restaurants that is was voted from api search
             votedRestaurantId:'', 
-            user_vote: 0, 
-            voted_restaurant_id:[]
+            // user vote counter 
+            user_vote: 0,
+            // list of existing restaurants in db
+            voted_restaurant_id:[],
+            // index of the restaurant voted in api search
+            votedIndex:'',
+            // api restaurant id 
+            apiRestaurantId:'', 
+            // saves the restaurants saved by user id 
+            idUserVoted:[]
+
         }
     }
 
-
+// when i loads it shows 
     componentDidMount() {
         this.initUser();
     }
 
     // user 
-
      initUser() {
         console.log(this.state.user);
         // get token from cookie 
@@ -107,10 +125,7 @@ logout(){
         });
     }
 
-
-
     // parsed result from api
-
     parsedResults(data) {
         return data.filter(restaurant => {
             return restaurant['restaurant'] ? true : false
@@ -131,7 +146,8 @@ logout(){
         })
     }
 
-
+// get restaurants info fron db/ 
+// i don't need this one- i will use this one  just to get the new column that I will add to count the votes of that one 
      getRestaurants() {
         let id = this.state.user.id
         console.log(id)
@@ -145,15 +161,21 @@ logout(){
                 })
             })
     }
+// get restaurant voted from voted table passes user id
+getVotedRestaurants(){
+    let userId = this.state.user.id
+    console.log(userId);
 
-    // check if user if user is true , if true sorry you voted 
-    // if false get restaurant id and check if it's the same to any 
-    // in the db , if equal, just augment caunter(state)
-    // if not equal save and then add vote 
-
-    // one button will handle all of this ----
- 
-
+    axios.get(`${this.state.url}/votes/2/${userId}`)
+    .then(data =>{
+        this.setState({
+            idUserVoted:data.data
+        })
+        console.log(data.data);
+        console.log(this.state.idUserVoted);
+    })
+}
+// get the list of existing restaurantt ids on the db
     getvotes(restid, userVoted, user_id,votedRestaurantsid, index){
         let indexPassed = index;
         axios.get(`${this.state.url}/api/1`)
@@ -163,45 +185,16 @@ logout(){
                 this.DatabaseIdCheck(restid,userVoted, user_id, indexPassed);
              })
     }
-
-
- 
-            //use this one take it out from above  ------dataIterator
-            // and do a while in dataIterator 
-            // after this i just pull out the info of joint table to display 
-
-            // after update table votes and display total votes on saved
-
-            // give suggestion of more voted on profile page
-
-
-
-          // tha tuser had voted - saved it as a [] in the array
-
-        // console.log(restid)
-        // this one doesn't work yet
-      
-        //      let restaid = restid
-        // axios.get(`${this.state.url}/votes/${restid}/${user_id}`)
-        // .then(data=>{
-        //     console.log(data);
-        //     this.setState({votedRestaurantsid: data.restaurant_id})
-        //     // other method to pass data to setsate 
-        //      if(votedRestaurantsid === ""){
-        //         console.log ('im inside the if')
-        //         this.postVote(userVoted, user_id, restid);
-        //     }else{
-        //         console.log('NO!!!!!!!!!!!')
-        //     }
-
-        //     // have the set this state for votedRestaurantsid
-        //     // then compare it to the one i got from the api
-        // }).catch((err)=>console.log(err))
-
+// check if the rest id exist 
     DatabaseIdCheck(restid,userVoted, user_id, index){
+        console.log("data check rest id", restid);
         let restresult= this.state.results
+        // api restaurant id 
         let restidToI= parseInt(restid);
         let restidState = this.state.voted_restaurant_id
+        console.log(restidState);
+
+        // containts ids of existinfg restautants in our data base 
         let idArray = []
         for(let i = 0; i < restidState.length; i++){
         idArray.push(restidState[i].restaurant_id)
@@ -214,12 +207,12 @@ logout(){
                     // now i gotta pass this info to save 
                     console.log('i gotta save this one', restresult[index]);
                     this.save(restresult[index])
-                }
-          
+                }  
+                        //have one if that checks if already saved only console, log 
     }
-
+// save the vote 
     postVote(uservoted, user_id, restid){
-        console.log(uservoted, user_id, restid);
+        console.log("post vote restaurant id", restid);
          fetch(`${this.state.url}/votes`,{
                 method:'POST', 
                 headers: {
@@ -240,61 +233,28 @@ logout(){
             })
 
     }
-// create a new method to get just that route 
-// just to get postgreat to return true if the id exist 
     // post vote 
-    vote(restaurant_id, index){ 
+    vote(restaurant_id, index, voted= true){ 
+        console.log('this is from button saved',restaurant_id)
         let indexClicked = index
-        console.log('this is index from the click',indexClicked)
-
-        // this.state = {
-
-        //     voting: [
-        //                 restaurant_id: 4,
-        //                 voters: "2 5 8",
-        //                 counter: this.state.voting.voters.length
-        //             ]
-        // }
-
-
-        // voting.voters.split('');
-
-        // // now voters is an aray
-        // // of ints
-
-        // if( !this.state.voting.voters.contains( current_user) ) {
-            
-        //     newVoting = this.state.voting
-
-        //     newVoting.voters += " current_user"
-
-
-        //     this.setState({
-        //         voting: newVoting
-        //     })
-        // }
-
-        this.setState( { user_vote: 1 } )
+        this.setState( { user_vote: 1, votedIndex:index, apiRestaurantId:restaurant_id} )
 
         let user_id = this.state.user.id
           // this one comes from the api
-        let restid = restaurant_id.restaurant_id
+        let restid = this.state.apiRestaurantId
         // this one is going to be the array to update votes
         let userVoted = this.state.user_vote
         // this one updates sate from data base 
         let votedRestaurantsid = this.state.votedRestaurantsid
         console.log(restid)
         console.log(userVoted);
-
-            this.getvotes(restid, userVoted, user_id, votedRestaurantsid, indexClicked);
-   
+            this.getvotes(restid, userVoted, user_id, votedRestaurantsid, indexClicked); 
     }
 
 
     // save restaurant from api 
     save(data) {
         console.log(data)
-
         let restaurant_id= data.restaurant_id
         let name = data.name
         let location = data.location
@@ -334,7 +294,8 @@ logout(){
                 return response.json()
             })
             .then((body) => {
-                console.log(body)
+                this.vote(this.state.apiRestaurantId, this.state.votedIndex)
+             
             });
     }
 
@@ -355,7 +316,6 @@ logout(){
     }
 
     // mode changes from navbar and when click on one restaurant
-
     changeMode(mode, current = false) {
         console.log('this is the mode that Im changing', mode)
         this.setState(prev => {
@@ -364,7 +324,6 @@ logout(){
             return prev;
         });
     }
-
     // sets the move when click on one reataurant 
     setRestaurant(restaurant) {
         console.log(restaurant)
@@ -383,7 +342,7 @@ logout(){
             return ( 
                 <div>
                 <Nav 
-                    saved={()=>{this.getRestaurants()}}
+                    saved={()=>{this.getVotedRestaurants()}}
                     changeMode = { this.changeMode.bind(this) }
                     logout={this.logout.bind(this)} 
                     mode={this.state.mode}
@@ -413,7 +372,7 @@ logout(){
             return ( 
                 <div>
                 <Nav 
-                    saved={()=>{this.getRestaurants()}}
+                    saved={()=>{this.getVotedRestaurants()}}
                     id={this.state.user}
                     changeMode = { this.changeMode.bind(this) }
                     logout={this.logout.bind(this)} 
@@ -431,15 +390,16 @@ logout(){
                 // use search to filter the saved info 
                 <div>
                 <Nav 
-                    saved={()=>{this.getRestaurants()}}
+                    saved={()=>{this.getVotedRestaurants()}}
                     changeMode = { this.changeMode.bind(this) }
                     logout={this.logout.bind(this)} 
                     mode={this.state.mode}
                     /> 
                     <h1> Your Preferred Restaurants Nearby</h1>
                 <RestaurantList 
-                    restaurants = { this.state.saved } 
+                    restaurants = { this.state.idUserVoted} 
                     setRestaurant = { this.setRestaurant.bind(this) }
+
                     button = {{
                         onClick: this.delete.bind(this),
                         text:"delete"
@@ -482,7 +442,6 @@ logout(){
             <Content 
             logout={this.logout.bind(this)} 
             user={this.state.user} 
-            longitud= {this.props.coords.longitude}
             />
 
         </div>

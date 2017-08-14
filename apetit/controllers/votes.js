@@ -22,12 +22,10 @@
 	  	})
 	  })
 
-	  router.get('/:restaurant/:id', (req, res)=>{
-	  	let restaurant_id= req.params.restaurant;
+	  router.get('/2/:id', (req, res)=>{
 	  	let user_id= req.params.id;
-	  	console.log("this is what i received from votes", restaurant_id);
-	  	console.log("this is what i recieved from votes user id",user_id);
-	  	Votes.findVotedByUser(restaurant_id, user_id)
+	  	console.log("this is what i received from votes", user_id);	  	console.log("this is what i recieved from votes user id",user_id);
+	  	Votes.findVotedByUser(user_id)
 	  		.then((data)=>{
 	  			console.log(data);
 	  			res.json(data);
