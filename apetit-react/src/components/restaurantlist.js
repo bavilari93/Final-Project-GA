@@ -34,15 +34,10 @@ class RestaurantList extends Component {
 					 	<div className='ui two buttons'>
 							<Button 
 								basic color='grey'
-					            onClick={()=>{this.props.button.onClick(restaurant, index)}}
+					            onClick={()=>{this.props.button.onClick(restaurant.restaurant_id, index)}}
 					            >{this.props.button.text}
 					        </Button>
-							<Button basic color='grey'
-							// i need to pass the key of the restaurant or whole to only have the vote there
-					            onClick={()=>{this.props.vote.onClick(restaurant.restaurant_id, index)}}
-					            >{this.props.vote.text}
-				             </Button>
-				         
+				     
 			         </div>
 			  </Card.Content>	
 			</Card>

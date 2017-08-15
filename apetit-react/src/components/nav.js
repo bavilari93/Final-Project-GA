@@ -2,7 +2,6 @@ import React from 'react';
 import {Grid, Menu } from 'semantic-ui-react'
 const Nav = (props) => {
     let mode = props.mode
-    console.log(mode)
     if(mode === 'auth'){
        return(
         <div></div>

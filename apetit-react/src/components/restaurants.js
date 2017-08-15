@@ -164,8 +164,6 @@ logout(){
 // get restaurant voted from voted table passes user id
 getVotedRestaurants(){
     let userId = this.state.user.id
-    console.log(userId);
-
     axios.get(`${this.state.url}/votes/2/${userId}`)
     .then(data =>{
         this.setState({
@@ -177,43 +175,36 @@ getVotedRestaurants(){
     })
 }
 // get the list of existing restaurantt ids on the db
-    getvotes(restid, userVoted, user_id,votedRestaurantsid, index){
+    getvotes( userVoted, user_id,votedRestaurantsid, index){
         let indexPassed = index;
         axios.get(`${this.state.url}/api/1`)
             .then(data =>{ 
                 this.setState({voted_restaurant_id:data.data})
-                console.log("this is the update", this.state.voted_restaurant_id)
-                this.DatabaseIdCheck(restid,userVoted, user_id, indexPassed);
+                this.DatabaseIdCheck(userVoted, user_id, indexPassed);
              })
     }
 // check if the rest id exist 
-    DatabaseIdCheck(restid,userVoted, user_id, index){
-        console.log("data check rest id", restid);
+    DatabaseIdCheck(userVoted, user_id, index){
         let restresult= this.state.results
         // api restaurant id 
-        let restidToI= parseInt(restid);
+        let irestId = parseInt(this.state.apiRestaurantId)
         let restidState = this.state.voted_restaurant_id
-        console.log(restidState);
-
         // containts ids of existinfg restautants in our data base 
         let idArray = []
         for(let i = 0; i < restidState.length; i++){
         idArray.push(restidState[i].restaurant_id)
         }
-        let indexArray= idArray.indexOf(restidToI)
-                if(restidToI === idArray[indexArray]){
-                    console.log('inside property of post vote')
-                     this.postVote(userVoted, user_id, restid);
+        let indexArray= idArray.indexOf(irestId)
+                if(irestId === idArray[indexArray]){
+                     this.postVote(userVoted, user_id);
                 }else{
                     // now i gotta pass this info to save 
-                    console.log('i gotta save this one', restresult[index]);
                     this.save(restresult[index])
                 }  
                         //have one if that checks if already saved only console, log 
     }
 // save the vote 
-    postVote(uservoted, user_id, restid){
-        console.log("post vote restaurant id", restid);
+    postVote(uservoted, user_id){
          fetch(`${this.state.url}/votes`,{
                 method:'POST', 
                 headers: {
@@ -223,7 +214,7 @@ getVotedRestaurants(){
                  body: JSON.stringify({
                     uservoted:uservoted,
                     user_id:user_id,
-                    restaurant_id:restid
+                    restaurant_id:this.state.apiRestaurantId
                  })
             }).then((response) => {
                 console.log(response);
@@ -236,23 +227,16 @@ getVotedRestaurants(){
     }
     // post vote 
     vote(restaurant_id, index, voted= true){ 
-        console.log('this is from button saved',restaurant_id)
+        console.log("this is in vote", restaurant_id)
         let indexClicked = index
         this.setState( { user_vote: 1, votedIndex:index, apiRestaurantId:restaurant_id} )
-
-        let user_id = this.state.user.id
-          // this one comes from the api
-        let restid = this.state.apiRestaurantId
+        let user_id = this.state.user.id       
         // this one is going to be the array to update votes
         let userVoted = this.state.user_vote
         // this one updates sate from data base 
         let votedRestaurantsid = this.state.votedRestaurantsid
-        console.log(restid)
-        console.log(userVoted);
-            this.getvotes(restid, userVoted, user_id, votedRestaurantsid, indexClicked); 
+            this.getvotes(userVoted, user_id, votedRestaurantsid, indexClicked); 
     }
-
-
     // save restaurant from api 
     save(data) {
         console.log(data)
@@ -306,10 +290,10 @@ getVotedRestaurants(){
         console.log( this.state.saved);
         let id = this.state.user.id
         console.log(id)
-        axios.delete(`${this.state.url}/votes/${restaurant.restaurant_id}/${id}`)
+        axios.delete(`${this.state.url}/votes/${restaurant}/${id}`)
             .then(res =>{
                 this.setState(prev =>{
-                    prev.idUserVoted = prev.idUserVoted.filter( s=> s.restaurant_id !== restaurant.restaurant_id);
+                    prev.idUserVoted = prev.idUserVoted.filter( s=> s.restaurant_id !== restaurant);
                     prev.mode = "restaurants";
                     prev.current = false;
                     return prev;
@@ -319,7 +303,6 @@ getVotedRestaurants(){
 
     // mode changes from navbar and when click on one restaurant
     changeMode(mode, current = false) {
-        console.log('this is the mode that Im changing', mode)
         this.setState(prev => {
             prev.mode = mode;
             prev.current = current;
@@ -338,9 +321,7 @@ getVotedRestaurants(){
 
     // view controller - what and what not to display 
     renderView() {
-        console.log(this.state.mode)
         if (this.state.mode === "search") {
-            console.log("im inside the render of search")
             return ( 
                 <div>
                 <Nav 
@@ -359,18 +340,13 @@ getVotedRestaurants(){
                     restaurants = { this.state.results } 
                     setRestaurant = {this.setRestaurant.bind(this) } 
                     button = {{
-                        onClick: this.save.bind(this),
-                        text:"save"
-                    }}
-                     vote = {{
                         onClick: this.vote.bind(this), 
-                        text:this.state.user_vote
+                        text:'Vote'
                     }}
                 /> 
                 </div>               
             )
         }else if(this.state.mode === "restaurant") {
-            console.log("im inside the render of one restaurant")
             return ( 
                 <div>
                 <Nav 
@@ -386,7 +362,6 @@ getVotedRestaurants(){
                 </div>
                 ) 
         }else if (this.state.mode === "restaurants"){
-            console.log("im inside the render of restaurants", this.state.mode)
             return (
                 // this i have to pass the methods that communicate with the backend
                 // use search to filter the saved info 
@@ -405,10 +380,6 @@ getVotedRestaurants(){
                         onClick: this.delete.bind(this),
                         text:"delete"
                         }}
-                    vote = {{
-                        onClick: this.vote.bind(this), 
-                        text:"votes"
-                    }}
                         /> 
                  
                    
