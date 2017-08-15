@@ -467,6 +467,7 @@ getVotedRestaurants(){
             getVotedCount={()=>{this.getVotedCount()}}
             user={this.state.user} 
             />
+            <div className="most-voted">
 
             <RestaurantList
             restaurants={this.state.renderVCount}
@@ -474,6 +475,7 @@ getVotedRestaurants(){
                         text:"Most Voted of the Week"
                         }}
                         /> 
+            </div>
 
         </div>
       )
