@@ -13,10 +13,10 @@ create:(uservoted, userId, restaurant_id)=>{
 		`INSERT INTO voted_restaurants(uservoted, user_id, restaurant_id) VALUES($1, $2, $3) returning *`, 
 		[uservoted, userId, restaurant_id]
 	);
-	} 
-// delete:(id,us)
+	},
+delete:(id,user_id) => db.none('DELETE FROM voted_restaurants WHERE restaurant_id=$1 AND user_id=$2', [id, user_id])
 
-}
+};
 
 
 module.exports = Votes; 

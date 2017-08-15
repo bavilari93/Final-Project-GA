@@ -34,7 +34,7 @@ class RestaurantList extends Component {
 					 	<div className='ui two buttons'>
 							<Button 
 								basic color='grey'
-					            onClick={()=>{this.props.button.onClick(restaurant)}}
+					            onClick={()=>{this.props.button.onClick(restaurant, index)}}
 					            >{this.props.button.text}
 					        </Button>
 							<Button basic color='grey'

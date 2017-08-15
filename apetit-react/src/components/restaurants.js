@@ -30,7 +30,7 @@ class Restaurants extends Component {
             current: false,
             // maybe to restrict the vote only one 
             user: false,
-            // express route
+            // express route--- this change to heroku link
             url: 'http://localhost:8080',
             // current user 
             user_id:'',
@@ -169,7 +169,8 @@ getVotedRestaurants(){
     axios.get(`${this.state.url}/votes/2/${userId}`)
     .then(data =>{
         this.setState({
-            idUserVoted:data.data
+            idUserVoted:data.data,
+            mode:"restaurants"
         })
         console.log(data.data);
         console.log(this.state.idUserVoted);
@@ -300,14 +301,15 @@ getVotedRestaurants(){
     }
 
     // delete data
-    delete(restaurant){
+    delete(restaurant, index){
+        // the index of the box i want to dissapear 
+        console.log( this.state.saved);
         let id = this.state.user.id
-        console.log(restaurant);
         console.log(id)
-        axios.delete(`${this.state.url}/api/${restaurant.id}/${id}`)
+        axios.delete(`${this.state.url}/votes/${restaurant.restaurant_id}/${id}`)
             .then(res =>{
                 this.setState(prev =>{
-                    prev.saved = prev.saved.filter( s=> s.id !== restaurant.id);
+                    prev.idUserVoted = prev.idUserVoted.filter( s=> s.restaurant_id !== restaurant.restaurant_id);
                     prev.mode = "restaurants";
                     prev.current = false;
                     return prev;
@@ -399,7 +401,6 @@ getVotedRestaurants(){
                 <RestaurantList 
                     restaurants = { this.state.idUserVoted} 
                     setRestaurant = { this.setRestaurant.bind(this) }
-
                     button = {{
                         onClick: this.delete.bind(this),
                         text:"delete"
