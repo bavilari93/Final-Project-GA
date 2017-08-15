@@ -471,6 +471,7 @@ getVotedRestaurants(){
 
             <RestaurantList
             restaurants={this.state.renderVCount}
+            setRestaurant = {this.setRestaurant.bind(this) } 
             button = {{
                         text:"Most Voted of the Week"
                         }}
