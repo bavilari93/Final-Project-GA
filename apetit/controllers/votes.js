@@ -13,6 +13,15 @@
 	  		.catch(err => console.log('votes controllers post error', err))  
 	  })
 
+	  	  router.get('/votes', (req, res)=>{
+	  	console.log(' i got it here to get most voted!!');
+	  	Votes.findMostVoted()
+	  		.then((data)=>{
+	  			console.log(data);
+	  			res.json(data)
+	  		})
+	  })
+
 	  router.get('/:userId', (req, res)=>{
 	  	console.log( 'this is the user I received', req.params.userId);
 	  	const user = req.params.userId;
@@ -44,6 +53,8 @@
 	  		})
 	  		.catch(err => console.log( 'controller voter GET Error', err))
 	  })
+
+
 
 
 

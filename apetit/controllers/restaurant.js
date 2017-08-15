@@ -21,6 +21,15 @@ router.get('/1', (req, res)=>{
         .catch(err => console.log('controller error in get', err))
 });
 
+router.get('/2', (req, res)=>{
+    console.log("this is getting all");
+     Restaurant.findAllRestaurants()
+        .then((data)=>{
+            res.json(data);
+        })
+        .catch(err => console.log('controller error in get 2', err))
+});
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     console.log(id)

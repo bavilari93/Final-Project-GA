@@ -19,18 +19,15 @@ class SignUp extends Component {
 
   // method to sign up
   signUp(e){
-    console.log(this.state.inputs)
     e.preventDefault(); 
     axios.post(`${this.props.url}/users`, this.state.inputs)
       .then(res => { 
-        console.log(res.data)
         this.props.setUser(res.data);
       })
   }
 
   // method to change one of the inputs
   changeInput(e, input){
-    console.log(e.target.value)
     const val = e.target.value;
     this.setState(prev => { 
       prev.inputs[input] = val;

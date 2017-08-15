@@ -58,6 +58,7 @@ const Nav = (props) => {
               <Menu.Item
                  name='Profile'  
                  onClick={()=>{props.changeMode('content')}}
+                 getVotedCount= {props.getVotedCount()}
               />
               <Menu.Item 
                   name='Liked Restaurants' 

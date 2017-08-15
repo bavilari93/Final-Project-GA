@@ -47,8 +47,11 @@ class Restaurants extends Component {
             // api restaurant id 
             apiRestaurantId:'', 
             // saves the restaurants saved by user id 
-            idUserVoted:[]
-
+            idUserVoted:[], 
+            // most voted restaurants near user 
+            mostVoted:[], 
+            // render only voted locations 
+            renderVCount:[]
         }
     }
 
@@ -161,6 +164,55 @@ logout(){
                 })
             })
     }
+
+// get restaurants count 
+getVotedCount(){
+    console.log("counting")
+    axios.get(`${this.state.url}/votes/votes`)
+     .then(data =>{
+        this.setState({
+            mostVoted:data.data,
+        })
+        console.log(data.data)
+        this.mostVotedSpec()
+    })
+}
+
+
+// Compare and get most voted restaurants info
+mostVotedSpec(){
+    console.log("most voted Specs")
+     axios.get(`${this.state.url}/api/2`)
+            .then(data =>{ 
+                this.voteChecker(data.data) 
+               console.log(data.data)
+             })
+}
+
+// checks index to only display this 
+voteChecker(data){
+    console.log(data);
+    let renderCountArr = []
+    let votedData = this.state.mostVoted
+    console.log(votedData);
+    for(var i = 0; i< votedData.length; i++){
+        for(var j=0; j<data.length; j++){
+
+            if(votedData[i].restaurant_id === data[j].restaurant_id){
+                let fountIt = data[i]
+                renderCountArr.push(data[i])
+            }  
+         }
+    } 
+    this.renderVotes(renderCountArr);   
+}
+
+    renderVotes(data){
+        console.log(data)
+        this.setState({
+            renderVCount:data
+        })
+    }
 // get restaurant voted from voted table passes user id
 getVotedRestaurants(){
     let userId = this.state.user.id
@@ -170,8 +222,6 @@ getVotedRestaurants(){
             idUserVoted:data.data,
             mode:"restaurants"
         })
-        console.log(data.data);
-        console.log(this.state.idUserVoted);
     })
 }
 // get the list of existing restaurantt ids on the db
@@ -287,7 +337,6 @@ getVotedRestaurants(){
     // delete data
     delete(restaurant, index){
         // the index of the box i want to dissapear 
-        console.log( this.state.saved);
         let id = this.state.user.id
         console.log(id)
         axios.delete(`${this.state.url}/votes/${restaurant}/${id}`)
@@ -411,10 +460,20 @@ getVotedRestaurants(){
                 logout={this.logout.bind(this)} 
                  mode={this.state.mode}
             /> 
+
+
             <Content 
             logout={this.logout.bind(this)} 
+            getVotedCount={()=>{this.getVotedCount()}}
             user={this.state.user} 
             />
+
+            <RestaurantList
+            restaurants={this.state.renderVCount}
+            button = {{
+                        text:"Most Voted of the Week"
+                        }}
+                        /> 
 
         </div>
       )
