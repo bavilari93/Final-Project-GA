@@ -43,7 +43,6 @@ most voted restaurant in their area
 <li>send invitation to friend to checkout places </li>
 <li>map with saved locations </li>
 <li>smart geo-location</li>
-<li> React Native </li>
 </ul>
 
 <h1>User stories</h1>
@@ -68,7 +67,7 @@ most voted restaurant in their area
 </ul>
 
 <h1>Technologies</h1> 
-React and Ruby on rails 
+React.js
 # Gems 
 <ul>
 <li>geocode </li>
